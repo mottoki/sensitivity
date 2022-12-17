@@ -21,6 +21,7 @@ st.markdown(hide_table_row_index, unsafe_allow_html=True)
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', None)
 
+# Column names
 cinp = "Input"
 clb = "Lower Bound"
 cub = "Upper Bound"
@@ -31,17 +32,25 @@ cbase = "Base Value"
 # -------------------- Input --------------------------------------------
 st.header('TORNADO CHART')
 # Base value
-sbase = st.number_input('Base value', value=1.2,
-    min_value=0.0, max_value=10.0, step=0.1)
+col1, col2 = st.columns([1,1], gap="medium")
+with col1:
+    sbase = st.number_input('Base value', value=1.2,
+        min_value=0.0, max_value=10.0, step=0.1)
+with col2:
+    userfontsize = st.number_input('Font Size', value=35,
+        min_value=1, step=1)
 st.markdown("""------------------------""")
 st.markdown("**Sensitivity Input**")
 col1, col2, col3 = st.columns([1,1,1], gap="medium")
 with col1:
+    # Number of sensitivities
     num_inp = st.number_input('Number of sensitivity cases', value=1, min_value=1, step=1)
 with col2:
+    # Lower and Upper bound selection
     selection_bound = [f'{clb} + {cub}', f'{clb} only', f'{cub} only']
     selbound = st.selectbox('Bound selection', selection_bound)
 with col3:
+    # Reorder selection
     if selbound == selection_bound[0]:
         num_col = 3
         selection_order = [f'{clb}: smallest to largest value',
@@ -125,6 +134,7 @@ st.markdown("""------------------------""")
 
 # ---------------------- Figure ------------------------------------------
 fig = go.Figure()
+# Lower bound figure
 if selbound != selection_bound[2]:
     fig.add_trace(go.Bar(y=df[cinp], x=[-x for x in df[cdelb]],
         base=[x for x in df[cbase]],
@@ -139,6 +149,7 @@ if selbound != selection_bound[2]:
         hoverinfo='skip',
         # texttemplate = "%{x:,s}(M$) "
         ))
+# Upper bound figure
 if selbound != selection_bound[1]:
     fig.add_trace(go.Bar(y=df[cinp], x=[x for x in df[cdeub]],
         base=[x for x in df[cbase]],
@@ -159,7 +170,7 @@ fig.update_layout(
     title_text="Tornado chart",
     title_font_family="sans-serif",
     #legend_title_text=’Financials’,
-    title_font_size = 35,
+    title_font_size = 45,
     title_font_color="darkblue",
     title_x=0.5 #to adjust the position along x-axis of the title
 )
@@ -175,13 +186,12 @@ fig.update_layout(
     yaxis=dict(
         # title='Input',
         # titlefont_size=18,
-        tickfont_size=18
+        tickfont_size=userfontsize
         ),
     xaxis=dict(
-        tickfont_size=18
+        tickfont_size=userfontsize
         ),
-    font=dict(
-        size=18),
+    font=dict(size=userfontsize),
     bargap=0.30)
 
 st.plotly_chart(fig, use_container_width=True, theme="streamlit")
