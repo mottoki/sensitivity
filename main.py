@@ -35,7 +35,7 @@ st.header('TORNADO CHART')
 col1, col2 = st.columns([1,1], gap="medium")
 with col1:
     sbase = st.number_input('Base value', value=1.2,
-        min_value=0.0, max_value=10.0, step=0.1)
+        min_value=0.0, step=0.1)
 with col2:
     userfontsize = st.number_input('Font Size', value=35,
         min_value=1, step=1)
@@ -111,12 +111,12 @@ for i in range(num_inp):
     if selbound != selection_bound[2]:
         with cols[k]:
             slow = st.number_input(f'{clb} {i+1}', value=1.0, key=f'{clb}_{i}',
-                min_value=0.0, max_value=10.0, step=0.1)
+                min_value=0.0, step=0.1)
             k += 1
     if selbound != selection_bound[1]:
         with cols[k]:
             supp = st.number_input(f'{cub} {i+1}', value=1.5, key=f'{cub}_{i}',
-                min_value=0.0, max_value=10.0, step=0.1)
+                min_value=0.0, step=0.1)
     # Calculate Delta & Create dataframe
     if selbound == selection_bound[0]:
         dellow = sbase - slow
